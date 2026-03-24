@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToyJoy - Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 100; }
+        .modal-content { background: white; margin: 2% auto; padding: 20px; width: 90%; max-width: 800px; border-radius: 10px; }
+        body {
+            background-color: rgb(108, 92, 70);
+        }
+    </style>
+</head>
+<body class="font-poppins bg-gray-100 text-gray-800">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">ToyJoy</h1>
+            <div class="space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">Home</a>
+                <a href="shop.html" class="text-yellow-300">Shop</a>
+                <a href="contact.html" class="hover:text-indigo-200 transition">Contact</a>
+                <a href="#cart" id="cart-link" class="bg-white text-indigo-600 px-4 py-2 rounded-full hover:bg-indigo-100 transition">Cart (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto flex flex-wrap">
+        <!-- Filter Sidebar -->
+        <div id="filter-sidebar" class="w-full md:w-1/4 p-4 bg-white shadow-md hidden md:block">
+            <button id="close-filters" class="md:hidden mb-4 text-gray-600">Close</button>
+            <h3 class="text-lg font-semibold mb-2">Categories</h3>
+            <div class="space-y-2">
+                <label><input type="checkbox" class="category-filter" value="Action Figures"> Action Figures</label><br>
+                <label><input type="checkbox" class="category-filter" value="Board Games"> Board Games</label><br>
+                <label><input type="checkbox" class="category-filter" value="Puzzles"> Puzzles</label><br>
+                <label><input type="checkbox" class="category-filter" value="Dolls"> Dolls</label><br>
+                <label><input type="checkbox" class="category-filter" value="Educational Toys"> Educational Toys</label><br>
+                <label><input type="checkbox" class="category-filter" value="Outdoor Toys"> Outdoor Toys</label>
+            </div>
+            <h3 class="text-lg font-semibold mt-4 mb-2">Price Range</h3>
+            <div class="space-y-2">
+                <label><input type="radio" name="price-range" value="all" checked> All Prices</label><br>
+                <label><input type="radio" name="price-range" value="under500"> Under ₹500</label><br>
+                <label><input type="radio" name="price-range" value="500to1000"> ₹500 - ₹1000</label><br>
+                <label><input type="radio" name="price-range" value="1000to2000"> ₹1000 - ₹2000</label><br>
+                <label><input type="radio" name="price-range" value="over2000"> Over ₹2000</label>
+            </div>
+            <h3 class="text-lg font-semibold mt-4 mb-2">Age Group</h3>
+            <div class="space-y-2">
+                <label><input type="checkbox" class="age-group-filter" value="0-2 years"> 0-2 years</label><br>
+                <label><input type="checkbox" class="age-group-filter" value="3-5 years"> 3-5 years</label><br>
+                <label><input type="checkbox" class="age-group-filter" value="6-8 years"> 6-8 years</label><br>
+                <label><input type="checkbox" class="age-group-filter" value="9-12 years"> 9-12 years</label><br>
+                <label><input type="checkbox" class="age-group-filter" value="13+ years"> 13+ years</label>
+            </div>
+            <button id="clear-filters" class="mt-4 bg-gray-200 text-gray-800 px-4 py-2 rounded">Clear Filters</button>
+        </div>
+        <!-- Product Grid -->
+        <div class="w-full md:w-3/4 p-4">
+            <button id="toggle-filters" class="md:hidden mb-4 bg-indigo-600 text-white px-4 py-2 rounded">Filters</button>
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <div id="cart-section" class="container mx-auto p-4 hidden">
+        <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+        <div id="cart-items" class="space-y-4"></div>
+        <div class="mt-6">
+            <p class="text-xl font-semibold">Total: ₹<span id="cart-total">0</span></p>
+        </div>
+        <div class="mt-6">
+            <h3 class="text-xl font-bold mb-4">Payment Details</h3>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Card Number</label>
+                    <input type="text" class="w-full p-2 border rounded" placeholder="1234 5678 9012 3456">
+                </div>
+                <div class="flex gap-4 mb-4">
+                    <div class="w-1/2">
+                        <label class="block text-gray-700">Expiry Date</label>
+                        <input type="text" class="w-full p-2 border rounded" placeholder="MM/YY">
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block text-gray-700">CVV</label>
+                        <input type="text" class="w-full p-2 border rounded" placeholder="123">
+                    </div>
+                </div>
+                <button id="proceed-to-checkout" class="bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition">Proceed to Checkout</button>
+            </div>
+        </div>
+        <button id="continue-shopping" class="mt-4 bg-gray-200 text-gray-800 px-4 py-2 rounded">Continue Shopping</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">ToyJoy</h3>
+                <p>Bringing joy through toys and games since 2025.</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-indigo-300 transition">About Us</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition">FAQ</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition">Shipping</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Contact</h3>
+                <p>Email: support@toyjoy.com</p>
+                <p>Phone: (123) 456-7890</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Product Details -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content flex flex-col gap-8 fade-in">
+            <div>
+                <img id="modal-main-image" class="w-full h-64 object-cover rounded-lg" src="" alt="Product Image">
+            </div>
+            <div>
+                <h2 id="modal-title" class="text-2xl font-bold mb-2"></h2>
+                <p id="modal-price" class="text-xl text-gray-600 mb-4">₹0.00</p>
+                <p><strong>Category:</strong> <span id="modal-category"></span></p>
+                <p><strong>Age Group:</strong> <span id="modal-age-group"></span></p>
+                <p id="modal-description" class="text-gray-600 mb-4"></p>
+                <div class="flex gap-4 mb-4">
+                    <button id="add-to-cart" class="bg-gray-800 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Add to Cart
+                    </button>
+                    <button id="add-to-wishlist" class="border border-gray-300 px-6 py-3 rounded-full flex items-center gap-2 hover:bg-indigo-100 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        Wishlist
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Static toy data
+        const toys = [
+            {
+                id: 1,
+                name: "Toyzone Ben10 Safari 50926 Green and Yellow, 2Y+",
+                price: 699,
+                description: "Bring home the Man of Steel with this detailed action figure.",
+                category: "Action Figures",
+                ageGroup: "6-8 years",
+                images: ["https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492362914/665/492362914-1_2620.webp"]
+            },
+            {
+                id: 2,
+                name: "EMotorad Formula Fun Mercedes Benz G-Wagon Ride-On Car, Black, 3Y+",
+                price: 1299,
+                description: "Classic family fun with this timeless board game.",
+                category: "Board Games",
+                ageGroup: "9-12 years",
+                images: ["https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/494423998/665/494423998-1_1410.webp"]
+            },
+            {
+                id: 3,
+                name: "Kids Green Scooter Adjustable & Fold-able Handle Green Printed Flashing LED Wheels Ride on Scooters",
+                price: 399,
+                description: "A fun and educational wooden puzzle for young children.",
+                category: "Puzzles",
+                ageGroup: "3-5 years",
+                images: ["https://snooplay.in/cdn/shop/products/1_610f1033-c2db-41be-a7d1-5ca674e0b799.jpg?v=1688998526&width=1800"]
+            },
+            {
+                id: 4,
+                name: "Nerf Super Soaker Piranha Water Blaster, 6 Fluid Ounce Tank Capacity",
+                price: 899,
+                description: "Inspire creativity with this classic Barbie doll.",
+                category: "Dolls",
+                ageGroup: "6-8 years",
+                images: ["https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/494348124/665/494348124-1_2370.webp"]
+            },
+            {
+                id: 5,
+                name: "LEGO Set",
+                price: 1599,
+                description: "Miko Mini: AI Robot For Kids, Interactive Bot Equipped With Coding, Stories & Games, Purple, Ideal Gift For Boys & Girls Of Ages 5Y+.",
+                category: "Educational Toys",
+                ageGroup: "9-12 years",
+                images: ["https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/494229842/665/494229842-1_2936.webp"]
+            },
+            {
+                id: 6,
+                name: "Faber-Castell ",
+                price: 1999,
+                description: "Faber-Castell 155133 lighthouse tin , 5Y+",
+                category: "Outdoor Toys",
+                ageGroup: "6-8 years",
+                images: ["https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/491374066/665/491374066-1_8239.webp"]
+            },
+            {
+                id: 7,
+                name: "Teddy Bear",
+                price: 499,
+                description: "A soft and cuddly teddy bear for little ones.",
+                category: "Dolls",
+                ageGroup: "0-2 years",
+                images: ["https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4"]
+            },
+            {
+                id: 8,
+                name: "Rowan",
+                price: 799,
+                description: "Rowan Dancing Cactus Toy - Best Interactive Singing & Talking Cactus with Fun Lights for Kids, 3M+",
+                category: "Board Games",
+                ageGroup: "13+ years",
+                images: ["https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492910192/665/492910192-1_9736.jpeg"]
+            },
+            {
+                id: 9,
+                name: "Electric Bubble Gun ",
+                price: 2999,
+                description: "Rowan Electric Bubble Gun Toy for Kids 3Y+, Multicolour",
+                category: "Puzzles",
+                ageGroup: "3-5 years",
+                images: ["https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492910174/665/492910174-1_9100.jpeg"]
+            },
+            {
+                id: 10,
+                name: "Yamaha",
+                price: 1499,
+                description: "Yamaha PSS F30, 37 Keys Portable Mini Keyboard, Black, 3Y+.",
+                category: "Educational Toys",
+                ageGroup: "9-12 years",
+                images: ["https://hmadmin.hamleys.in/product/492410013/665/492410013_1.jpg"]
+            },
+            {
+                id: 11,
+                name: "Zoozi ",
+                price: 199,
+                description: "Zoozi My First Tennis Tennis set for kids Tennis Play kit Multicolor 3Y+",
+                category: "Outdoor Toys",
+                ageGroup: "6-8 years",
+                images: ["https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492408381/665/492408381-1_9630.webp"]
+            },
+            {
+                id: 12,
+                name: "ELC",
+                price: 299,
+                description: "ELC Twist and Turn House Activity Game for Kids 12M+, Multicolour",
+                category: "Dolls",
+                ageGroup: "0-2 years",
+                images: ["https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492365284/665/492365284-1.webp"]
+            }
+        ];
+
+        const productGrid = document.getElementById('product-grid');
+        const filterSidebar = document.getElementById('filter-sidebar');
+        const toggleFiltersBtn = document.getElementById('toggle-filters');
+        const closeFiltersBtn = document.getElementById('close-filters');
+        const clearFiltersBtn = document.getElementById('clear-filters');
+        const cartSection = document.getElementById('cart-section');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const continueShoppingBtn = document.getElementById('continue-shopping');
+        const proceedToCheckoutBtn = document.getElementById('proceed-to-checkout');
+        const cartCount = document.getElementById('cart-count');
+
+        // Cart management
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        function addToCart(productId) {
+            const product = toys.find(p => p.id == productId);
+            const cartItem = cart.find(item => item.id == productId);
+
+            if (cartItem) {
+                cartItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            saveCart();
+            showCart();
+        }
+
+        function renderCart() {
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const cartItem = document.createElement('div');
+                cartItem.className = 'flex justify-between items-center bg-white p-4 rounded-lg shadow-md';
+                cartItem.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <img src="${item.images[0]}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                        <div>
+                            <h3 class="text-lg font-semibold">${item.name}</h3>
+                            <p class="text-gray-600">₹${item.price} x ${item.quantity}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="decrease-quantity bg-gray-200 px-2 py-1 rounded" data-id="${item.id}">-</button>
+                        <button class="increase-quantity bg-gray-200 px-2 py-1 rounded" data-id="${item.id}">+</button>
+                        <button class="remove-item bg-red-500 text-white px-2 py-1 rounded" data-id="${item.id}">Remove</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+
+            cartTotal.textContent = total;
+        }
+
+        function showCart() {
+            productGrid.parentElement.parentElement.classList.add('hidden');
+            cartSection.classList.remove('hidden');
+            renderCart();
+        }
+
+        // Render products
+        function renderProducts(products) {
+            productGrid.innerHTML = '';
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white p-6 rounded-lg shadow-md hover-scale cursor-pointer';
+                card.dataset.id = product.id;
+                card.innerHTML = `
+                    <img src="${product.images[0]}" alt="${product.name}" class="w-full h-48 object-cover rounded-t-lg">
+                    <h3 class="text-lg font-semibold mt-4">${product.name}</h3>
+                    <p class="text-gray-600">${product.description}</p>
+                    <p class="text-gray-600 mt-2">₹${product.price}</p>
+                    <button class="add-to-cart mt-4 bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition" data-id="${product.id}">Add to Cart</button>
+                `;
+                productGrid.appendChild(card);
+            });
+
+            // Add event listeners
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('add-to-cart')) {
+                        const productId = card.dataset.id;
+                        const product = toys.find(p => p.id == productId);
+                        openModal(product);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = btn.dataset.id;
+                    addToCart(productId);
+                });
+            });
+        }
+
+        // Initial render
+        renderProducts(toys);
+        updateCartCount();
+
+        // Filter functionality
+        function updateFilters() {
+            const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
+            const selectedPriceRange = document.querySelector('input[name="price-range"]:checked').value;
+            const selectedAgeGroups = Array.from(document.querySelectorAll('.age-group-filter:checked')).map(cb => cb.value);
+
+            const filteredProducts = toys.filter(product => {
+                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+                let priceMatch = true;
+                if (selectedPriceRange !== 'all') {
+                    if (selectedPriceRange === 'under500') priceMatch = product.price < 500;
+                    else if (selectedPriceRange === '500to1000') priceMatch = product.price >= 500 && product.price < 1000;
+                    else if (selectedPriceRange === '1000to2000') priceMatch = product.price >= 1000 && product.price < 2000;
+                    else if (selectedPriceRange === 'over2000') priceMatch = product.price >= 2000;
+                }
+                const ageMatch = selectedAgeGroups.length === 0 || selectedAgeGroups.includes(product.ageGroup);
+                return categoryMatch && priceMatch && ageMatch;
+            });
+
+            renderProducts(filteredProducts);
+        }
+
+        // Event listeners for filters
+        filterSidebar.addEventListener('change', updateFilters);
+
+        // Clear filters
+        clearFiltersBtn.addEventListener('click', () => {
+            document.querySelectorAll('.category-filter').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.age-group-filter').forEach(cb => cb.checked = false);
+            document.querySelector('input[name="price-range"][value="all"]').checked = true;
+            updateFilters();
+        });
+
+        // Toggle filters on mobile
+        toggleFiltersBtn.addEventListener('click', () => {
+            filterSidebar.classList.remove('hidden');
+        });
+
+        closeFiltersBtn.addEventListener('click', () => {
+            filterSidebar.classList.add('hidden');
+        });
+
+        // Cart event listeners
+        cartItemsContainer.addEventListener('click', (e) => {
+            const id = e.target.dataset.id;
+            if (e.target.classList.contains('remove-item')) {
+                cart = cart.filter(item => item.id != id);
+                saveCart();
+                renderCart();
+            } else if (e.target.classList.contains('increase-quantity')) {
+                const item = cart.find(item => item.id == id);
+                if (item) item.quantity += 1;
+                saveCart();
+                renderCart();
+            } else if (e.target.classList.contains('decrease-quantity')) {
+                const item = cart.find(item => item.id == id);
+                if (item && item.quantity > 1) item.quantity -= 1;
+                else cart = cart.filter(item => item.id != id);
+                saveCart();
+                renderCart();
+            }
+        });
+
+        continueShoppingBtn.addEventListener('click', () => {
+            cartSection.classList.add('hidden');
+            productGrid.parentElement.parentElement.classList.remove('hidden');
+        });
+
+        proceedToCheckoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items to proceed.');
+                return;
+            }
+            window.location.href = 'checkout.html';
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('product-modal');
+        const modalMainImage = document.getElementById('modal-main-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPrice = document.getElementById('modal-price');
+        const modalCategory = document.getElementById('modal-category');
+        const modalAgeGroup = document.getElementById('modal-age-group');
+        const modalDescription = document.getElementById('modal-description');
+        const modalAddToCart = document.getElementById('add-to-cart');
+
+        function openModal(product) {
+            modalTitle.textContent = product.name;
+            modalPrice.textContent = `₹${product.price}.00`;
+            modalCategory.textContent = product.category;
+            modalAgeGroup.textContent = product.ageGroup;
+            modalDescription.textContent = product.description;
+            modalMainImage.src = product.images[0];
+            modal.style.display = 'block';
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        modalAddToCart.addEventListener('click', () => {
+            const productId = toys.find(p => p.name === modalTitle.textContent).id;
+            addToCart(productId);
+            modal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

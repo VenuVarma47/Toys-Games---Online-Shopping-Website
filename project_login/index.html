@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToyJoy - Premium Toys & Games Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes bounceIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            60% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .animate-bounce-in { animation: bounceIn 0.8s ease-out; }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .float { animation: float 3s ease-in-out infinite; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 100; }
+        .modal-content { background: white; margin: 2% auto; padding: 20px; width: 90%; max-width: 1200px; border-radius: 10px; }
+        .carousel-img { width: 100%; height: 400px; object-fit: cover; }
+        .thumbnail { width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
+        .thumbnail:hover { border-color: #4f46e5; }
+        .active-thumbnail { border-color: #4f46e5; }
+    </style>
+</head>
+<body class="font-poppins bg-gray-100 text-gray-800">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Toys For Kids</h1>
+            <div class="space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">Home</a>
+                <a href="shop.html" class="hover:text-indigo-200 transition">Shop</a>
+                <a href="contact.html" class="hover:text-indigo-200 transition">Contact</a>
+                <a href="#" class="bg-white text-indigo-600 px-4 py-2 rounded-full hover:bg-indigo-100 transition">Cart</a>
+                <a href="login.php" class="hover:text-indigo-200 transition">  Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-20">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="max-w-lg animate-bounce-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Discover Fun with Toy For Kids</h2>
+                <p class="text-lg mb-6">Explore our premium collection of toys and games for all ages!</p>
+                <button class="bg-yellow-400 text-indigo-800 px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition">Shop Now</button>
+            </div>
+            <img src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4" alt="Colorful Toys" class="w-full md:w-1/2 rounded-lg shadow-xl float mt-6 md:mt-0">
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="py-16 container mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">Featured Categories</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                <img src="https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/172249923992636.webp" alt="Board Games" class="w-full h-48 object-cover rounded-t-lg">
+                <h3 class="text-xl font-semibold mt-4">Board Games</h3>
+                <p class="text-gray-600 mt-2">Family fun for all ages</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                <img src="https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/172249927692626.webp" alt="Action Figures" class="w-full h-48 object-cover rounded-t-lg">
+                <h3 class="text-xl font-semibold mt-4">Action Figures</h3>
+                <p class="text-gray-600 mt-2">Collect your favorites</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover-scale">
+                <img src="https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/172249929792625.webp" alt="Puzzles" class="w-full h-48 object-cover rounded-t-lg">
+                <h3 class="text-xl font-semibold mt-4">Puzzles</h3>
+                <p class="text-gray-600 mt-2">Challenge your mind</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Sellers -->
+    <section class="bg-gray-200 py-16">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">Best Sellers</h2>
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Product cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="bg-indigo-600 text-white py-12">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">Join Our Newsletter</h2>
+            <p class="mb-6">Get the latest deals and updates!</p>
+            <div class="max-w-md mx-auto flex">
+                <input type="email" placeholder="Enter your email" class="w-full p-3 rounded-l-full">
+                <button class="bg-yellow-400 text-indigo-800 px-6 py-3 rounded-r-full hover:bg-yellow-300 transition">Subscribe</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">ToyJoy</h3>
+                <p>Bringing joy through toys and games since 2025.</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-indigo-300 transition">About Us</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition">FAQ</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition">Shipping</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Contact</h3>
+                <p>Email: support@toyjoy.com</p>
+                <p>Phone: (123) 456-7890</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Product Details -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content flex flex-col md:flex-row gap-8 fade-in">
+            <div class="md:w-1/2">
+                <img id="modal-main-image" class="carousel-img rounded-lg" src="" alt="Product 이미지">
+                <div class="flex gap-2 mt-4 overflow-x-auto">
+                    <img class="thumbnail" src="" alt="Thumbnail 1">
+                    <img class="thumbnail" src="" alt="Thumbnail 2">
+                    <img class="thumbnail" src="" alt="Thumbnail 3">
+                    <img class="thumbnail" src="" alt="Thumbnail 4">
+                    <img class="thumbnail" src="" alt="Thumbnail 5">
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <h2 id="modal-title" class="text-2xl font-bold mb-2"></h2>
+                <p id="modal-price" class="text-xl text-gray-600 mb-4">₹0.00</p>
+                <p id="modal-description" class="text-gray-600 mb-4"></p>
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold">Select Size</h3>
+                    <div class="flex gap-2 mt-2">
+                        <button class="size-btn border border-gray-300 px-4 py-2 rounded hover:bg-indigo-100" data-size="S">S</button>
+                        <button class="size-btn border border-gray-300 px-4 py-2 rounded hover:bg-indigo-100" data-size="M">M</button>
+                        <button class="size-btn border border-gray-300 px-4 py-2 rounded hover:bg-indigo-100" data-size="L">L</button>
+                        <button class="size-btn border border-gray-300 px-4 py-2 rounded hover:bg-indigo-100" data-size="XL">XL</button>
+                        <button class="size-btn border border-gray-300 px-4 py-2 rounded hover:bg-indigo-100" data-size="XXL">XXL</button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold">Select Color</h3>
+                    <div class="flex gap-2 mt-2">
+                        <button class="color-btn border border-gray-300 px-4 py-2 rounded hover:bg-indigo-100" data-color="Black">Black</button>
+                        <button class="color-btn border border-gray-300 px-4 py-2 rounded hover:bg-indigo-100" data-color="White">White</button>
+                    </div>
+                </div>
+                <div class="mb-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold">Quantity</h3>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button id="decrease-qty" class="border border-gray-300 px-3 py-1 rounded">-</button>
+                            <span id="quantity" class="px-4 py-1 border border-gray-300 rounded">1</span>
+                            <button id="increase-qty" class="border border-gray-300 px-3 py-1 rounded">+</button>
+                        </div>
+                    </div>
+                    <p id="modal-availability" class="text-gray-600">10 items available</p>
+                </div>
+                <div class="flex gap-4 mb-4">
+                    <a href="checkout.html"><button id="add-to-cart" class="bg-gray-800 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Buy Now
+                    </button></a>
+                    <button id="add-to-wishlist" class="border border-gray-300 px-6 py-3 rounded-full flex items-center gap-2 hover:bg-indigo-100 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        Wishlist
+                    </button>
+                </div>
+                <p class="text-gray-600 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    Delivery Charges: ₹0.00
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Static toy data
+        const toys = [
+            {
+                id: 1,
+                name: "Superhero Action Figure",
+                price: 599,
+                images: [
+                    "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492910192/665/492910192-1_9736.jpeg",
+                    "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492910174/665/492910174-1_9100.jpeg",
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2b52cahttps://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492408381/665/492408381-1_9630.webp",
+                    "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4",
+                    "https://images.unsplash.com/photo-1608889175123-353dedf83e7b"
+                ],
+                description: "Bring home the excitement with this Superhero Action Figure!",
+                details: {
+                    about: "This action figure features movable joints and detailed design, perfect for imaginative play.",
+                    sizeFit: "Height: 12 inches. Suitable for ages 3+.",
+                    material: "Made from durable, non-toxic plastic.",
+                    care: "Wipe with a damp cloth to clean.",
+                    policy: "7-day refund, return, and exchange policy from delivery date. (T&C Apply)"
+                },
+                availability: 10
+            },
+            {
+                id: 2,
+                name: "Racing Car Set",
+                price: 799,
+                images: [
+                    "https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492408381/665/492408381-1_9630.webp",
+                    "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2b52ca",
+                    "https://images.unsplash.com/photo-1608889175123-353dedf83e7b"
+                ],
+                description: "Speed into fun with this high-quality Racing Car Set!",
+                details: {
+                    about: "Includes 2 cars and a track for endless racing fun.",
+                    sizeFit: "Track length: 3 ft. Suitable for ages 5+.",
+                    material: "Made from sturdy plastic and metal parts.",
+                    care: "Store in a dry place, clean with a dry cloth.",
+                    policy: "7-day refund, return, and exchange policy from delivery date. (T&C Apply)"
+                },
+                availability: 15
+            },
+            {
+                id: 3,
+                name: "Puzzle Adventure Pack",
+                price: 399,
+                images: [
+                    "https://snooplay.in/cdn/shop/products/1_610f1033-c2db-41be-a7d1-5ca674e0b799.jpg?v=1688998526&width=1800",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+                    "https://images.unsplash.com/photo-1602528811926-2d9c1f65c951",
+                    "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4",
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2b52ca"
+                ],
+                description: "Challenge your mind with this Puzzle Adventure Pack!",
+                details: {
+                    about: "500-piece puzzle with a vibrant adventure theme.",
+                    sizeFit: "Completed size: 18 x 24 inches. Ages 8+.",
+                    material: "Made from recycled cardboard.",
+                    care: "Keep pieces in the box when not in use.",
+                    policy: "7-day refund, return, and exchange policy from delivery date. (T&C Apply)"
+                },
+                availability: 20
+            },
+            {
+                id: 4,
+                name: "Board Game Night",
+                price: 999,
+                images: [
+                    "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/492365284/665/492365284-1.webp",
+                    "https://images.unsplash.com/photo-1519245659620-e8596a199a3c",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+                    "https://images.unsplash.com/photo-1602528811926-2d9c1f65c951",
+                    "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4"
+                ],
+                description: "Family fun awaits with this Board Game Night set!",
+                details: {
+                    about: "Classic board game for 2-6 players.",
+                    sizeFit: "Board size: 20 x 20 inches. Ages 6+.",
+                    material: "Made from wood and thick cardstock.",
+                    care: "Wipe board with a damp cloth, store pieces safely.",
+                    policy: "7-day refund, return, and exchange policy from delivery date. (T&C Apply)"
+                },
+                availability: 8
+            }
+        ];
+
+        // Populate product cards
+        const productGrid = document.getElementById('product-grid');
+        toys.forEach(toy => {
+            const card = document.createElement('div');
+            card.className = 'bg-white p-6 rounded-lg shadow-md hover-scale cursor-pointer';
+            card.innerHTML = `
+                <img src="${toy.images[0]}" alt="${toy.name}" class="w-full h-48 object-cover rounded-t-lg">
+                <h3 class="text-lg font-semibold mt-4">${toy.name}</h3>
+                <p class="text-gray-600">${toy.description}</p>
+                <p class="text-gray-600 mt-2">₹${toy.price}</p>
+                <p class="text-green-600 flex items-center gap-2 mt-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    Free Delivery
+                </p>
+                <button class="mt-4 bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition">Add to Cart</button>
+            `;
+            card.addEventListener('click', () => openModal(toy));
+            productGrid.appendChild(card);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('product-modal');
+        const modalMainImage = document.getElementById('modal-main-image');
+        const modalThumbnails = document.querySelectorAll('.thumbnail');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPrice = document.getElementById('modal-price');
+        const modalDescription = document.getElementById('modal-description');
+        const modalAvailability = document.getElementById('modal-availability');
+        const quantityDisplay = document.getElementById('quantity');
+        const increaseQtyBtn = document.getElementById('increase-qty');
+        const decreaseQtyBtn = document.getElementById('decrease-qty');
+        let currentQuantity = 1;
+        let currentToy = null;
+
+        function openModal(toy) {
+            currentToy = toy;
+            modalTitle.textContent = toy.name;
+            modalPrice.textContent = `₹${toy.price}.00`;
+            modalDescription.innerHTML = `
+                <p><strong>About Design:</strong> ${toy.details.about}</p>
+                <p><strong>Size & Fit:</strong> ${toy.details.sizeFit}</p>
+                <p><strong>Material:</strong> ${toy.details.material}</p>
+                <p><strong>Care Instructions:</strong> ${toy.details.care}</p>
+                <p><strong>Refund, Return & Exchange Policy:</strong> ${toy.details.policy}</p>
+            `;
+            modalAvailability.textContent = `${toy.availability} items available`;
+            modalMainImage.src = toy.images[0];
+            modalThumbnails.forEach((thumb, index) => {
+                thumb.src = toy.images[index];
+                thumb.classList.toggle('active-thumbnail', index === 0);
+                thumb.addEventListener('click', () => {
+                    modalMainImage.src = toy.images[index];
+                    modalThumbnails.forEach(t => t.classList.remove('active-thumbnail'));
+                    thumb.classList.add('active-thumbnail');
+                });
+            });
+            currentQuantity = 1;
+            quantityDisplay.textContent = currentQuantity;
+            modal.style.display = 'block';
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        increaseQtyBtn.addEventListener('click', () => {
+            if (currentQuantity < currentToy.availability) {
+                currentQuantity++;
+                quantityDisplay.textContent = currentQuantity;
+            }
+        });
+
+        decreaseQtyBtn.addEventListener('click', () => {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                quantityDisplay.textContent = currentQuantity;
+            }
+        });
+
+        document.getElementById('add-to-cart').addEventListener('click', () => {
+            alert(`${currentToy.name} (Qty: ${currentQuantity}) added to cart!`);
+        });
+
+        document.getElementById('add-to-wishlist').addEventListener('click', () => {
+            alert(`${currentToy.name} added to wishlist!`);
+        });
+
+        // Scroll animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-bounce-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.hover-scale, section').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

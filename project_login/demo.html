@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipkart Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f1f3f6;
+            color: #212121;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            padding: 20px;
+            width: 50%;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2874f0;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            background: white;
+            padding: 10px;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.23);
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 90%;
+            padding: 8px;
+        }
+        
+        .categories {
+            background: white;
+            padding: 15px;
+            width: 80%;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.23);
+        }
+        
+        .categories h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #212121;
+        }
+        
+        .categories ul {
+            list-style: none;
+        }
+        
+        .categories li {
+            padding: 8px 0;
+            color: #2874f0;
+            font-weight: 500;
+        }
+        
+        .login-section {
+            background: white;
+            padding: 25px;
+            width: 350px;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.23);
+            margin-top: 20px;
+        }
+        
+        .login-section h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #212121;
+            font-weight: 500;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .login-form input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+            outline: none;
+        }
+        
+        .login-form input:focus {
+            border-color: #2874f0;
+        }
+        
+        .terms {
+            font-size: 12px;
+            color: #878787;
+            margin-bottom: 20px;
+        }
+        
+        .terms a {
+            color: #2874f0;
+            text-decoration: none;
+        }
+        
+        .login-btn {
+            background: #fb641b;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .signup-link {
+            text-align: center;
+            color: #2874f0;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .footer {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #878787;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #2874f0;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo">Flipkart</div>
+            <div class="search-box">
+                <input type="text" placeholder="Search for products, brands and more">
+            </div>
+            <div class="categories">
+                <h2>Electronics</h2>
+                <ul>
+                    <li>TV & Appliances</li>
+                    <li>Men</li>
+                    <li>Women</li>
+                    <li>Baby & Kids</li>
+                    <li>Home & Furniture</li>
+                    <li>Sports, Books & More</li>
+                    <li>Offer Zone</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="login-section">
+            <h2>Login</h2>
+            <p style="margin-bottom: 20px;">Get access to your Orders, Wishlist and Recommendations</p>
+            
+            <form class="login-form">
+                <input type="text" placeholder="Enter Email/Mobile number" required>
+                <input type="password" placeholder="Enter Password" required>
+                
+                <p class="terms">By continuing, you agree to Flipkart's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+                
+                <button type="submit" class="login-btn">Login</button>
+                
+                <div class="signup-link">New to Flipkart? Create an account</div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Help</a>
+            <a href="#">Consumer Policy</a>
+            <a href="#">Cancellation & Returns</a>
+            <a href="#">Terms Of Use</a>
+        </div>
+        <div>© 2023 Flipkart Internet Private Limited</div>
+    </div>
+</body>
+</html>

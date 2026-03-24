@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToyJoy - Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            60% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .animate-bounce-in { animation: bounceIn 0.8s ease-out; }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            ring: 2px;
+            ring-indigo-500;
+        }
+        .payment-option {
+            transition: background-color 0.3s ease;
+        }
+        .payment-option:hover {
+            background-color: #e0e7ff;
+        }
+    </style>
+</head>
+<body class="font-poppins bg-gray-100 text-gray-800">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">ToyJoy</h1>
+            <div class="space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">Home</a>
+                <a href="shop.html" class="hover:text-indigo-200 transition">Shop</a>
+                <a href="#" class="hover:text-indigo-200 transition">Categories</a>
+                <a href="contact.html" class="hover:text-indigo-200 transition">Contact</a>
+                <a href="shop.html#cart" class="bg-white text-indigo-600 px-4 py-2 rounded-full hover:bg-indigo-100 transition">Cart</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="py-16 container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-8 animate-bounce-in">Checkout</h2>
+        <form id="checkout-form" action="process_checkout.php" method="POST">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Form Section -->
+                <div class="lg:w-2/3">
+                    <div class="bg-white p-6 rounded-lg shadow-md fade-in">
+                        <!-- Billing Information -->
+                        <h3 class="text-xl font-semibold mb-4">Billing Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label for="first-name" class="block text-gray-700 mb-1">First Name</label>
+                                <input type="text" id="first-name" name="first_name" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-gray-700 mb-1">Last Name</label>
+                                <input type="text" id="last-name" name="last_name" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="email" class="block text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" name="email" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="phone" class="block text-gray-700 mb-1">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <h3 class="text-xl font-semibold mb-4">Shipping Address</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="md:col-span-2">
+                                <label for="address" class="block text-gray-700 mb-1">Street Address</label>
+                                <input type="text" id="address" name="address" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="city" class="block text-gray-700 mb-1">City</label>
+                                <input type="text" id="city" name="city" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="state" class="block text-gray-700 mb-1">State</label>
+                                <input type="text" id="state" name="state" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="zip" class="block text-gray-700 mb-1">ZIP Code</label>
+                                <input type="text" id="zip" name="zip" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="country" class="block text-gray-700 mb-1">Country</label>
+                                <select id="country" name="country" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">Select Country</option>
+                                    <option value="India">India</option>
+                                    <option value="USA">USA</option>
+                                    <option value="UK">UK</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="Australia">Australia</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Method -->
+                        <h3 class="text-xl font-semibold mb-4">Shipping Method</h3>
+                        <div class="space-y-2 mb-6">
+                            <label class="flex items-center p-3 border border-gray-300 rounded payment-option">
+                                <input type="radio" name="shipping_method" value="standard" class="mr-2" checked>
+                                <span>Standard Shipping (5-7 Business Days) - ₹0.00</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-300 rounded payment-option">
+                                <input type="radio" name="shipping_method" value="express" class="mr-2">
+                                <span>Express Shipping (2-3 Business Days) - ₹200.00</span>
+                            </label>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <h3 class="text-xl font-semibold mb-4">Payment Method</h3>
+                        <div class="space-y-2 mb-6">
+                            <label class="flex items-center p-3 border border-gray-300 rounded payment-option">
+                                <input type="radio" name="payment_method" value="credit-card" class="mr-2" checked>
+                                <span>Credit/Debit Card</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-300 rounded payment-option">
+                                <input type="radio" name="payment_method" value="paypal" class="mr-2">
+                                <span>PayPal</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-300 rounded payment-option">
+                                <input type="radio" name="payment_method" value="cod" class="mr-2">
+                                <span>Cash on Delivery</span>
+                            </label>
+                        </div>
+
+                        <!-- Payment Details (for Credit/Debit Card) -->
+                        <div id="credit-card-details" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="md:col-span-2">
+                                <label for="card-number" class="block text-gray-700 mb-1">Card Number</label>
+                                <input type="text" id="card-number" name="card_number" placeholder="1234 5678 9012 3456" class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="card-expiry" class="block text-gray-700 mb-1">Expiry Date</label>
+                                <input type="text" id="card-expiry" name="card_expiry" placeholder="MM/YY" class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="card-cvc" class="block text-gray-700 mb-1">CVC</label>
+                                <input type="text" id="card-cvc" name="card_cvc" placeholder="123" class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:w-1/3">
+                    <div class="bg-white p-6 rounded-lg shadow-md fade-in sticky top-20">
+                        <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
+                        <div id="order-items" class="space-y-4"></div>
+                        <hr>
+                        <div class="flex justify-between">
+                            <p>Subtotal</p>
+                            <p id="subtotal">₹0.00</p>
+                        </div>
+                        <div class="flex justify-between">
+                            <p>Shipping</p>
+                            <p id="shipping-cost">₹0.00</p>
+                        </div>
+                        <div class="flex justify-between">
+                            <p>Tax (GST 5%)</p>
+                            <p id="tax">₹0.00</p>
+                        </div>
+                        <hr>
+                        <div class="flex justify-between font-semibold text-lg">
+                            <p>Total</p>
+                            <p id="total-cost">₹0.00</p>
+                        </div>
+                        <div class="mt-6">
+                            <label class="flex items-center gap-2 mb-4">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span class="text-sm text-gray-600">I agree to the <a href="#" class="text-indigo-600 hover:underline">Terms & Conditions</a></span>
+                            </label>
+                            <button type="submit" id="place-order" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+            <div>
+                <h3 class="text-xl font-bold mb-4">ToyJoy</h3>
+                <p>Bringing joy through toys and games since 2025.</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-indigo-300 transition">About Us</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition">FAQ</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition">Shipping</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Contact</h3>
+                <p>Email: support@toyjoy.com</p>
+                <p>Phone: (123) 456-7890</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load cart from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const orderItemsContainer = document.getElementById('order-items');
+        const subtotalElement = document.getElementById('subtotal');
+        const shippingCostElement = document.getElementById('shipping-cost');
+        const taxElement = document.getElementById('tax');
+        const totalCostElement = document.getElementById('total-cost');
+        const placeOrderBtn = document.getElementById('place-order');
+        const checkoutForm = document.getElementById('checkout-form');
+
+        // Render order items
+        function renderOrderItems() {
+            orderItemsContainer.innerHTML = '';
+            let subtotal = 0;
+
+            if (cart.length === 0) {
+                orderItemsContainer.innerHTML = '<p class="text-gray-600">Your cart is empty. <a href="shop.html" class="text-indigo-600 hover:underline">Return to shop</a>.</p>';
+                subtotalElement.textContent = '₹0.00';
+                taxElement.textContent = '₹0.00';
+                shippingCostElement.textContent = '₹0.00';
+                totalCostElement.textContent = '₹0.00';
+                placeOrderBtn.disabled = true;
+                placeOrderBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                return;
+            }
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                const itemElement = document.createElement('div');
+                itemElement.className = 'flex justify-between items-center';
+                const imageSrc = item.images && item.images[0] ? item.images[0] : 'https://via.placeholder.com/48';
+                itemElement.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img src="${imageSrc}" alt="${item.name}" class="w-12 h-12 object-cover rounded" onerror="this.src='https://via.placeholder.com/48'">
+                        <div>
+                            <p class="font-medium">${item.name}</p>
+                            <p class="text-sm text-gray-600">Qty: ${item.quantity}</p>
+                        </div>
+                    </div>
+                    <p>₹${itemTotal.toFixed(2)}</p>
+                `;
+                orderItemsContainer.appendChild(itemElement);
+            });
+
+            const tax = subtotal * 0.05; // 5% GST
+            const shippingCost = document.querySelector('input[name="shipping_method"]:checked').value === 'standard' ? 0 : 200;
+            const total = subtotal + tax + shippingCost;
+
+            subtotalElement.textContent = `₹${subtotal.toFixed(2)}`;
+            shippingCostElement.textContent = `₹${shippingCost.toFixed(2)}`;
+            taxElement.textContent = `₹${tax.toFixed(2)}`;
+            totalCostElement.textContent = `₹${total.toFixed(2)}`;
+        }
+
+        // Toggle payment details visibility
+        const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+        const creditCardDetails = document.getElementById('credit-card-details');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', () => {
+                if (method.value === 'credit-card') {
+                    creditCardDetails.classList.remove('hidden');
+                } else {
+                    creditCardDetails.classList.add('hidden');
+                }
+            });
+        });
+
+        // Update shipping cost and total
+        const shippingMethods = document.querySelectorAll('input[name="shipping_method"]');
+        let shippingCost = 0;
+
+        shippingMethods.forEach(method => {
+            method.addEventListener('change', () => {
+                shippingCost = method.value === 'standard' ? 0 : 200;
+                shippingCostElement.textContent = `₹${shippingCost.toFixed(2)}`;
+                const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const tax = subtotal * 0.05;
+                const total = subtotal + tax + shippingCost;
+                totalCostElement.textContent = `₹${total.toFixed(2)}`;
+            });
+        });
+
+        // Form submission validation
+        checkoutForm.addEventListener('submit', (e) => {
+            if (cart.length === 0) {
+                e.preventDefault();
+                alert('Your cart is empty. Please add items to proceed.');
+                return;
+            }
+
+            const termsChecked = document.getElementById('terms').checked;
+            if (!termsChecked) {
+                e.preventDefault();
+                alert('Please agree to the Terms & Conditions.');
+                return;
+            }
+        });
+
+        // Initial render
+        renderOrderItems();
+    </script>
+</body>
+</html>
